@@ -1,45 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ToolRequest</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ToolRequest - Worker & Supervisor</title>
 <style>
-body{font-family:Arial,sans-serif;background:#f5f5f5;margin:0;padding:20px}
-.card{background:#fff;max-width:600px;margin:0 auto;padding:24px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.1)}
-h1{margin:0}.orange{color:#ea580c}
-input,select,textarea{width:100%;padding:10px;margin:8px 0;border:1px solid #ccc;border-radius:8px;box-sizing:border-box}
-button{background:#111;color:#fff;padding:12px;border:none;border-radius:8px;width:100%;font-size:16px}
-.urgent{background:#fee2e2;border-left:5px solid red;padding:10px;margin:10px 0;border-radius:8px}
-.item{background:#f9f9f9;padding:12px;margin:10px 0;border-radius:8px}
+body{font-family:Arial,sans-serif;background:#f5f5f5;margin:0;padding:16px}
+.card{background:#fff;max-width:650px;margin:0 auto;padding:20px;border-radius:14px;box-shadow:0 2px 12px rgba(0,0,0,.1)}
+h1{margin:0}.o{color:#ea580c}
+.tabs{display:flex;gap:8px;margin:14px 0}
+.tabs button{flex:1;padding:12px;border:1px solid #ddd;background:#eee;border-radius:10px;font-weight:bold}
+.tabs button.on{background:#111;color:#fff}
+input,select,textarea{width:100%;padding:11px;margin:7px 0;border:1px solid #ccc;border-radius:10px;box-sizing:border-box}
+button.big{background:#111;color:#fff;padding:13px;border:none;border-radius:10px;width:100%;font-size:16px}
+.item{background:#f9f9f9;padding:12px;margin:10px 0;border-radius:10px}
+.urgent{background:#fee2e2;border-left:6px solid red;padding:12px;margin:10px 0;border-radius:10px}
+.small{font-size:12px;color:#666}
+.tag{display:inline-block;background:#111;color:#fff;padding:3px 8px;border-radius:20px;font-size:12px}
+.btns{display:flex;gap:6px;margin-top:8px}
+.btns button{flex:1;padding:8px;border-radius:8px;border:1px solid #ddd;background:#fff}
 </style>
 </head>
 <body>
 <div class="card">
-<h1>Tool<span class="orange">Request</span></h1>
-<p>Request tools without verbal requests. Nothing gets lost.</p>
-<h3>New Request</h3>
+<h1>Tool<span class="o">Request</span></h1>
+<p class="small" id="subtitle">Request tools without verbal requests. Nothing gets lost.</p>
+<div style="display:flex;gap:8px">
+<select id="lang" onchange="setLang()"><option value="en">English</option><option value="es">Español</option><option value="ht">Kreyòl</option><option value="fr">Français</option></select>
+<select id="dept"><option>Welding</option><option>Machining</option><option>Assembly</option><option>Maintenance</option></select>
+</div>
+<div class="tabs">
+<button id="bW" class="on" onclick="show('w')">👷 WORKER</button>
+<button id="bS" onclick="show('s')">👀 SUPERVISOR</button>
+</div>
+
+<div id="worker">
+<h3 id="tNew">New Request</h3>
 <input id="who" placeholder="Who is requesting? e.g. Lee">
-<input id="tool" placeholder="What tool? e.g. Torque wrench">
-<input id="job" placeholder="For what job?">
+<input id="tool" placeholder="What tool? e.g. Torch">
+<input id="job" placeholder="For what job? e.g. Center vent tube">
 <select id="urgency"><option>Normal</option><option>Urgent</option><option>URGENT - WORK STOPPED</option></select>
-<button onclick="add()">Create Request</button>
+<button class="big" onclick="add()" id="btnCreate">Create Request</button>
+<p class="small" id="noteW">Your request appears instantly in Supervisor view.</p>
+</div>
+
+<div id="sup" style="display:none">
+<h3 id="tSup">All Requests - Supervisor</h3>
+<p class="small" id="noteS">Tap Approve / Delivered to update status. Try it now.</p>
+<div style="display:flex;gap:8px"><div style="flex:1;background:#fef3c7;padding:10px;border-radius:10px;text-align:center"><b id="cTotal">0</b><br><span class="small">Total</span></div><div style="flex:1;background:#fee2e2;padding:10px;border-radius:10px;text-align:center"><b id="cUrgent">0</b><br><span class="small">Urgent</span></div><div style="flex:1;background:#dcfce7;padding:10px;border-radius:10px;text-align:center"><b id="cDone">0</b><br><span class="small">Delivered</span></div></div>
 <div id="list"></div>
-<p style="font-size:12px;color:#666">Languages: English | Español | Kreyòl | Français - Worker requests in their language, supervisor sees it in theirs. | Pilot v1 by Lee Romero</p>
+</div>
+<p class="small">Languages: English | Español | Kreyòl | Français - Worker requests in their language, supervisor sees it in theirs. | Pilot v1 by Lee Romero</p>
 </div>
 <script>
+let reqs=[
+{tool:'Torch',who:'Lee',job:'Welding, LLp department',urg:'Urgent',dept:'Welding',status:'Pending',time:'11/24/2026, 8:30:52 AM'},
+{tool:'Torch',who:'Lee',job:'Welding, LLp department',urg:'Urgent',dept:'Welding',status:'Pending',time:'11/24/2026, 8:30:31 AM'}
+];
+function show(v){
+document.getElementById('worker').style.display=v=='w'?'block':'none';
+document.getElementById('sup').style.display=v=='s'?'block':'none';
+document.getElementById('bW').className=v=='w'?'on':'';document.getElementById('bS').className=v=='s'?'on':'';
+render();
+}
 function add(){
-let t=document.getElementById('tool').value;
+let t=document.getElementById('tool').value;if(!t){alert('Write what tool');return}
 let w=document.getElementById('who').value||'Worker';
 let j=document.getElementById('job').value||'';
 let u=document.getElementById('urgency').value;
-if(!t){alert('Write what tool you need');return}
-let d=document.createElement('div');
-d.className=u.includes('WORK STOPPED')?'urgent':'item';
-d.innerHTML='<b>'+t+'</b> - '+w+'<br>'+j+'<br><small>'+u+' - '+new Date().toLocaleString()+'</small>';
-document.getElementById('list').prepend(d);
+let d=document.getElementById('dept').value;
+reqs.unshift({tool:t,who:w,job:j,urg:u,dept:d,status:'Pending',time:new Date().toLocaleString()});
 document.getElementById('tool').value='';
+show('s');
 }
+function setStatus(i,s){reqs[i].status=s;render();}
+function render(){
+let h='';let tot=reqs.length,urg=0,done=0;
+reqs.forEach((r,i)=>{
+if(r.urg.includes('URGENT')||r.urg=='Urgent')urg++;
+if(r.status=='Delivered')done++;
+h+='<div class="'+(r.urg.includes('WORK STOPPED')?'urgent':'item')+'"><b>'+r.tool+'</b> - '+r.who+' <span class="tag">'+r.dept+'</span><br>'+r.job+'<br><span class="small">'+r.urg+' - '+r.time+' - <b>'+r.status+'</b></span><div class="btns"><button onclick="setStatus('+i+',\'Approved\')">✅ Approve</button><button onclick="setStatus('+i+',\'Delivered\')">📦 Delivered</button><button onclick="setStatus('+i+',\'Pending\')">↩ Pending</button></div></div>';
+});
+document.getElementById('list').innerHTML=h||'<p class="small">No requests yet. Create one in Worker view.</p>';
+document.getElementById('cTotal').innerText=tot;document.getElementById('cUrgent').innerText=urg;document.getElementById('cDone').innerText=done;
+}
+let T={en:{sub:'Request tools without verbal requests. Nothing gets lost.',nw:'New Request',btn:'Create Request',sup:'All Requests - Supervisor',nw2:'Your request appears instantly in Supervisor view.'},es:{sub:'Pide herramientas sin pedirlas de boca. Nada se pierde.',nw:'Nuevo Pedido',btn:'Crear Pedido',sup:'Todos los Pedidos - Supervisor',nw2:'Tu pedido aparece al instante en vista Supervisor.'},ht:{sub:'Mande zouti san pale bouch. Anyen pa pèdi.',nw:'Nouvo Demann',btn:'Kreye Demann',sup:'Tout Demann yo - Sipèvizè',nw2:'Demann ou parèt touswit nan Supervisor.'},fr:{sub:'Demandez des outils sans demander à voix. Rien ne se perd.',nw:'Nouvelle Demande',btn:'Créer Demande',sup:'Toutes les Demandes - Superviseur',nw2:'Votre demande apparaît instantanément en vue Superviseur.'}};
+function setLang(){let l=document.getElementById('lang').value;let d=T[l];document.getElementById('subtitle').innerText=d.sub;document.getElementById('tNew').innerText=d.nw;document.getElementById('btnCreate').innerText=d.btn;document.getElementById('tSup').innerText=d.sup;document.getElementById('noteW').innerText=d.nw2;}
+render();
 </script>
 </body>
 </html>
