@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ToolRequest - Worker & Supervisor + Budget + MSC</title>
+<title>ToolRequest - Worker & Supervisor + Budget + 【entity-MSC¦canonical_name=MSC】</title>
 <style>
 body{font-family:Arial,sans-serif;background:#f5f5f5;margin:0;padding:16px}
 .card{background:#fff;max-width:650px;margin:0 auto;padding:20px;border-radius:14px;box-shadow:0 2px 12px rgba(0,0,0,.1)}
@@ -28,89 +28,49 @@ button.big{background:#111;color:#fff;padding:13px;border:none;border-radius:10p
 <body>
 <div class="card">
 <h1>Tool<span class="o">Request</span></h1>
-<p class="small">Request tools only. No maintenance - maintenance already exists at work. Suppliers: MSC, Amazon, Grainger.</p>
+<p class="small">Request tools only. No maintenance - maintenance already exists at work. Suppliers: 【entity-MSC¦canonical_name=MSC】, 【entity-Amazon¦canonical_name=Amazon】, Grainger.</p>
 <div style="display:flex;gap:8px">
-<select id="lang" onchange="setLang()"><option value="en">English</option><option value="es">Español</option><option value="ht">Kreyòl</option><option value="fr">Français</option></select>
+<select id="lang"><option value="en">English</option><option value="es">Español</option><option value="ht">Kreyòl</option><option value="fr">Français</option></select>
 <select id="dept"><option>Welding</option><option>Machining</option><option>Assembly</option><option>Maintenance</option></select>
 </div>
 <div class="tabs">
 <button id="bW" class="on" onclick="show('w')">👷 WORKER</button>
 <button id="bS" onclick="show('s')">👀 SUPERVISOR</button>
 </div>
-
 <div id="worker">
 <h3>New Tool Request</h3>
 <input id="who" placeholder="Who is requesting? e.g. Lee">
-<input id="tool" placeholder="What tool? e.g. Torch / Tungsten">
-<input id="job" placeholder="For what job? e.g. Center vent tube">
-<input id="cost" type="number" placeholder="Estimated cost $ e.g. 120">
+<input id="tool" placeholder="What tool? e.g. Band Saw Blade">
+<input id="job" placeholder="For what job? e.g. Center vent tube - 【entity-MSC¦canonical_name=MSC】# 09255092">
+<input id="cost" type="number" placeholder="Estimated cost $ e.g. 74.80">
 <label class="small">Supplier - Where did you find it?</label>
-<select id="supplier"><option>MSC - mscdirect.com</option><option>Amazon</option><option>Grainger</option><option>Other Store</option></select>
-<input id="link" placeholder="Paste link here - e.g. https://mscdirect.com/...">
-<a href="#" class="mscbtn" onclick="searchMSC();return false;">🔍 Search this tool in MSC</a>
-<a href="#" class="mscbtn" style="background:#ff9900" onclick="searchAmazon();return false;">🔍 Search this tool in Amazon</a>
-<p class="small">💡 Tip: Search in MSC, copy the link, paste it above. Your supervisor opens it with one tap.</p>
+<select id="supplier"><option>【entity-MSC¦canonical_name=MSC】 - mscdirect.com</option><option>【entity-Amazon¦canonical_name=Amazon】</option><option>Grainger</option><option>Other Store</option></select>
+<input id="link" placeholder="Paste link here - e.g. https://mscdirect.com/product/details/...">
+<a href="#" class="mscbtn" onclick="searchMSC();return false;">🔍 Search this tool in 【entity-MSC¦canonical_name=MSC】</a>
+<a href="#" class="mscbtn" style="background:#ff9900" onclick="searchAmazon();return false;">🔍 Search this tool in 【entity-Amazon¦canonical_name=Amazon】</a>
+<p class="small">💡 Tip: Search in 【entity-MSC¦canonical_name=MSC】, copy the product link, paste it above. Your supervisor opens it with one tap.</p>
 <select id="urgency"><option>Normal</option><option>Urgent</option><option>URGENT - WORK STOPPED</option></select>
 <button class="big" onclick="add()">Create Request</button>
 <p class="small">Only tools. No maintenance tickets here.</p>
 </div>
-
 <div id="sup" style="display:none">
 <h3>All Requests - Supervisor</h3>
 <div class="budget" id="budgetBox"></div>
 <div style="display:flex;gap:8px"><div style="flex:1;background:#fef3c7;padding:10px;border-radius:10px;text-align:center"><b id="cTotal">0</b><br><span class="small">Total</span></div><div style="flex:1;background:#fee2e2;padding:10px;border-radius:10px;text-align:center"><b id="cUrgent">0</b><br><span class="small">Urgent</span></div><div style="flex:1;background:#dcfce7;padding:10px;border-radius:10px;text-align:center"><b id="cDone">0</b><br><span class="small">Delivered</span></div></div>
 <div id="list"></div>
 </div>
-<p class="small">ToolRequest - Tools only | MSC - mscdirect.com | Amazon | Grainger | Languages: English | Español | Kreyòl | Français | Pilot v1 by Lee Romero</p>
+<p class="small">ToolRequest - Tools only | 【entity-MSC¦canonical_name=MSC】 - mscdirect.com | 【entity-Amazon¦canonical_name=Amazon】 | Grainger | Languages: English | Español | Kreyòl | Français | Pilot v1 by Lee Romero</p>
 </div>
 <script>
 let budgets={Welding:5000,Machining:4000,Assembly:3000,Maintenance:2500};
-let reqs=[
-{tool:'Tungsten',who:'Lee',job:'For the welding torch',cost:85,supplier:'MSC - mscdirect.com',link:'https://www.mscdirect.com/browse/tn?searchterm=tungsten+welding',urg:'Normal',dept:'Welding',status:'Approved',time:'11/24/2026, 9:28:54 AM'},
-{tool:'Torch',who:'Lee',job:'Welding, LLp department',cost:150,supplier:'MSC - mscdirect.com',link:'https://www.mscdirect.com/browse/tn?searchterm=welding+torch',urg:'Urgent',dept:'Welding',status:'Approved',time:'11/24/2026, 8:30:52 AM'},
-{tool:'Torch',who:'Lee',job:'Welding, LLp department',cost:150,supplier:'Amazon',link:'',urg:'Urgent',dept:'Welding',status:'Approved',time:'11/24/2026, 8:30:31 AM'}
-];
+let reqs=[];
 function searchMSC(){let t=document.getElementById('tool').value||'welding tool';window.open('https://www.mscdirect.com/browse/tn?searchterm='+encodeURIComponent(t),'_blank');}
 function searchAmazon(){let t=document.getElementById('tool').value||'welding tool';window.open('https://www.amazon.com/s?k='+encodeURIComponent(t),'_blank');}
 function fixLink(u){if(!u)return '';u=u.trim();if(!u.startsWith('http'))u='https://'+u;return u;}
-function show(v){
-document.getElementById('worker').style.display=v=='w'?'block':'none';
-document.getElementById('sup').style.display=v=='s'?'block':'none';
-document.getElementById('bW').className=v=='w'?'on':'';document.getElementById('bS').className=v=='s'?'on':'';
-render();
-}
-function add(){
-let t=document.getElementById('tool').value;if(!t){alert('Write what tool');return}
-let w=document.getElementById('who').value||'Worker';
-let j=document.getElementById('job').value||'';
-let c=parseFloat(document.getElementById('cost').value)||0;
-let sup=document.getElementById('supplier').value;
-let l=fixLink(document.getElementById('link').value||'');
-let u=document.getElementById('urgency').value;
-let d=document.getElementById('dept').value;
-reqs.unshift({tool:t,who:w,job:j,cost:c,supplier:sup,link:l,urg:u,dept:d,status:'Pending',time:new Date().toLocaleString()});
-document.getElementById('tool').value='';document.getElementById('cost').value='';document.getElementById('link').value='';
-show('s');
-}
+function show(v){document.getElementById('worker').style.display=v=='w'?'block':'none';document.getElementById('sup').style.display=v=='s'?'block':'none';document.getElementById('bW').className=v=='w'?'on':'';document.getElementById('bS').className=v=='s'?'on':'';render();}
+function add(){let t=document.getElementById('tool').value;if(!t){alert('Write what tool');return}let w=document.getElementById('who').value||'Worker';let j=document.getElementById('job').value||'';let c=parseFloat(document.getElementById('cost').value)||0;let sup=document.getElementById('supplier').value;let l=fixLink(document.getElementById('link').value||'');let u=document.getElementById('urgency').value;let d=document.getElementById('dept').value;reqs.unshift({tool:t,who:w,job:j,cost:c,supplier:sup,link:l,urg:u,dept:d,status:'Pending',time:new Date().toLocaleString()});document.getElementById('tool').value='';document.getElementById('cost').value='';document.getElementById('link').value='';show('s');}
 function setStatus(i,s){reqs[i].status=s;render();}
-function render(){
-let h='';let tot=reqs.length,urg=0,done=0;
-let spent={};Object.keys(budgets).forEach(k=>spent[k]=0);
-reqs.forEach(r=>{spent[r.dept]+=r.cost||0;if(r.urg.includes('URGENT')||r.urg=='Urgent')urg++;if(r.status=='Delivered')done++;});
-let bHtml='<b>💰 Department Budgets - Tools Only</b><br>';
-Object.keys(budgets).forEach(k=>{
-let s=spent[k],left=budgets[k]-s,pct=Math.min(100,Math.round(s/budgets[k]*100));
-bHtml+='<div style="margin-top:8px"><b>'+k+': $'+budgets[k]+'</b> - Used: $'+s+' - Left: $'+left+'<div class="bar"><div class="fill" style="width:'+pct+'%"></div></div><span class="small">'+pct+'% used</span></div>';
-});
-document.getElementById('budgetBox').innerHTML=bHtml;
-reqs.forEach((r,i)=>{
-let supIcon=r.supplier.includes('【entity-MSC¦canonical_name=MSC】')?'🔵 【entity-MSC¦canonical_name=MSC】':r.supplier.includes('Amazon')?'🟠 Amazon':r.supplier.includes('Grainger')?'🔴 Grainger':'⚪ '+r.supplier;
-let linkHtml=r.link?'<br><a class="linkbtn" href="'+r.link+'" target="_blank">🔗 View in Store</a><br><span class="small">'+r.link+'</span>':'<br><span class="small">No link provided</span>';
-h+='<div class="'+(r.urg.includes('WORK STOPPED')?'urgent':'item')+'"><b>'+r.tool+'</b> - '+r.who+' <span class="tag">'+r.dept+'</span> <span class="tag" style="background:#ea580c">$'+(r.cost||0)+'</span> <span class="tag" style="background:#005EB8">'+supIcon+'</span><br>'+r.job+linkHtml+'<br><span class="small">'+r.urg+' - '+r.time+' - <b>'+r.status+'</b></span><div class="btns"><button onclick="setStatus('+i+',\'Approved\')">✅ Approve</button><button onclick="setStatus('+i+',\'Delivered\')">📦 Delivered</button><button onclick="setStatus('+i+',\'Pending\')">↩ Pending</button></div></div>';
-});
-document.getElementById('list').innerHTML=h;
-document.getElementById('cTotal').innerText=tot;document.getElementById('cUrgent').innerText=urg;document.getElementById('cDone').innerText=done;
-}
+function render(){let h='';let tot=reqs.length,urg=0,done=0;let spent={};Object.keys(budgets).forEach(k=>spent[k]=0);reqs.forEach(r=>{spent[r.dept]+=r.cost||0;if(r.urg.includes('URGENT')||r.urg=='Urgent')urg++;if(r.status=='Delivered')done++;});let bHtml='<b>💰 Department Budgets - Tools Only</b><br>';Object.keys(budgets).forEach(k=>{let s=spent[k],left=budgets[k]-s,pct=Math.min(100,Math.round(s/budgets[k]*100));bHtml+='<div style="margin-top:8px"><b>'+k+': $'+budgets[k]+'</b> - Used: $'+s+' - Left: $'+left+'<div class="bar"><div class="fill" style="width:'+pct+'%"></div></div><span class="small">'+pct+'% used</span></div>';});document.getElementById('budgetBox').innerHTML=bHtml;reqs.forEach((r,i)=>{let supIcon=r.supplier.includes('MSC')?'🔵 MSC':r.supplier.includes('Amazon')?'🟠 Amazon':r.supplier.includes('Grainger')?'🔴 Grainger':'⚪ '+r.supplier;let linkHtml=r.link?'<br><a class="linkbtn" href="'+r.link+'" target="_blank">🔗 View in Store</a><br><span class="small">'+r.link+'</span>':'<br><span class="small">No link provided</span>';h+='<div class="'+(r.urg.includes('WORK STOPPED')?'urgent':'item')+'"><b>'+r.tool+'</b> - '+r.who+' <span class="tag">'+r.dept+'</span> <span class="tag" style="background:#ea580c">$'+(r.cost||0)+'</span> <span class="tag" style="background:#005EB8">'+supIcon+'</span><br>'+r.job+linkHtml+'<br><span class="small">'+r.urg+' - '+r.time+' - <b>'+r.status+'</b></span><div class="btns"><button onclick="setStatus('+i+',\'Approved\')">✅ Approve</button><button onclick="setStatus('+i+',\'Delivered\')">📦 Delivered</button><button onclick="setStatus('+i+',\'Pending\')">↩ Pending</button></div></div>';});document.getElementById('list').innerHTML=h||'<p class="small">No requests yet. Create one in Worker view.</p>';document.getElementById('cTotal').innerText=tot;document.getElementById('cUrgent').innerText=urg;document.getElementById('cDone').innerText=done;}
 render();
 </script>
 </body>
