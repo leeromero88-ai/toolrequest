@@ -12,29 +12,39 @@ Work only speeds up if work stops and workers say they cannot continue without t
 
 ToolRequest puts every request in one place, with status.
 
+Why this is good for supervisors:
+Supervisors today have to do too much multitasking. When one person has to do everything in their head, there is a high risk that something gets overlooked.
+ToolRequest removes that multitasking. Every request is in one place. Nothing falls through the cracks.
+This improves workflow, less chasing, less work stoppage.
+And it improves morale: workers feel heard because their request is written and visible. When workers feel heard, they work better, and work comes out with the best possible quality.
+
 ## How it works
 
-### 👷 WORKER
+### WORKER - Easy for everyone
 1. Writes who is requesting, what tool, for what job
-2. Adds estimated cost and supplier: 【entity-MSC¦canonical_name=MSC】, 【entity-Amazon¦canonical_name=Amazon】, Grainger
-3. Pastes the product link from 【entity-MSC¦canonical_name=MSC】 (mscdirect.com) or 【entity-Amazon¦canonical_name=Amazon】
-4. Chooses urgency: Normal / Urgent / URGENT - WORK STOPPED
-5. Taps Create Request
+2. Chooses supplier: MSC, Amazon, Grainger - all three same size
+3. Can search directly in MSC, Amazon, or Grainger from inside ToolRequest
+4. Easy option: just copy the MSC# - only numbers, e.g. 09255092. No need to copy a long link. ToolRequest builds the link automatically.
+5. Link is optional. If worker does not know how to copy a link, leave it blank and still create the request.
+6. Worker does NOT set cost. Supervisor sets cost.
+7. Chooses urgency: Normal / Urgent / URGENT - WORK STOPPED
+8. Taps Create Request
 
-### 👀 SUPERVISOR
+### SUPERVISOR
 1. Sees all requests in one dashboard
 2. Sees totals: Total / Urgent / Delivered
 3. Sees department budgets: Welding, Machining, Assembly, Maintenance
-4. Opens the store link with one tap - MSC, Amazon, Grainger
-5. Taps Approve / Delivered / Pending to update status
+4. Sets the cost for each request. Worker never sets cost.
+5. Opens the store link with one tap - MSC, Amazon, Grainger
+6. Taps Approve / Delivered / Pending to update status
 
 ## Suppliers
-- MSC - mscdirect.com - Search directly from the app, copy product link like https://www.mscdirect.com/product/details/09255092
-- Amazon
-- Grainger
+- MSC - mscdirect.com - Main industrial supplier. Easy MSC# lookup.
+- Amazon - Good for small items and consumables.
+- Grainger - Another major industrial supplier, same level as MSC.
 
 ## Languages
-English | Español | Kreyòl | Français
+English | Espanol | Kreyol | Francais
 Worker requests in their language, supervisor sees it in theirs.
 
 ## Tech
