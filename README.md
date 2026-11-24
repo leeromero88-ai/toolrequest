@@ -7,8 +7,8 @@ Request tools without verbal requests. Nothing gets lost.
 Live demo: https://toolrequest-eight.vercel.app
 
 ## What it solves
-Today tool requests are verbal, by message, or by expiring link. They get forgotten.
-Work only speeds up if work stops and workers say they cannot continue without the tool.
+
+Sometimes requests can get lost or delayed, which can slow down work. ToolRequest helps keep everything organized in one place, so nothing is missed and work flows smoothly.
 
 ToolRequest puts every request in one place, with status.
 
