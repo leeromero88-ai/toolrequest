@@ -147,7 +147,15 @@ const isUrgent=u=>u==='URGENT - WORK STOPPED';
 function mscLink(num){ const clean=String(num||'').replace(/[^0-9]/g,''); return clean?'https://www.mscdirect.com/product/details/'+clean:null; }
 // Returns a real product link, or null if we only know the store.
 function productLink(r){ if(r.link) return r.link; if(r.sup==='MSC') return mscLink(r.msc); return null; }
-function safeUrl(u){ try{ const x=new URL(u); return (x.protocol==='https:'||x.protocol==='http:')?x.href:null; }catch(e){ return null; } }
+// Accepts what workers really paste: a full link, a link without https://,
+// or shared text like "Check this out: https://a.co/xyz".
+function safeUrl(u){
+  u=String(u||'').trim(); if(!u) return null;
+  const found=u.match(/https?:\/\/[^\s<>"']+/i);
+  if(found) u=found[0];
+  else if(/^(www\.)?[a-z0-9-]+(\.[a-z0-9-]+)+(\/\S*)?$/i.test(u)) u='https://'+u;
+  try{ const x=new URL(u); return (x.protocol==='https:'||x.protocol==='http:')?x.href:null; }catch(e){ return null; }
+}
 function money(n){ const v=Math.round(n*100)/100; return '$'+v.toLocaleString('en-US',{minimumFractionDigits:v%1?2:0,maximumFractionDigits:2}); }
 
 function calcBudgets(){ for(const d in budgets) budgets[d].used=0; requests.forEach(r=>{ if((r.status==='Approved'||r.status==='Delivered') && r.cost){ if(budgets[r.dept]) budgets[r.dept].used+=r.cost; } }); }
