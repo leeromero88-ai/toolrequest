@@ -3,136 +3,231 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="ToolRequest - Request tools without verbal requests. Nothing gets lost. Worker and supervisor views in English, Spanish, Haitian Creole and French.">
 <title>ToolRequest - Request tools without verbal requests</title>
 <style>
 *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:#f6f6f4;color:#111}
-header{background:#111;color:#fff;padding:18px 16px;text-align:center} header h1{margin:0;font-size:30px} header h1 span{color:#EA580C} header p{margin:6px 0 0;color:#ddd}
+header{background:#111;color:#fff;padding:18px 16px;text-align:center} header h1{margin:0;font-size:30px} header h1 span{color:#F97316} header p{margin:6px 0 0;color:#ddd}
 .wrap{max-width:980px;margin:0 auto;padding:16px}
-.lang{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px 0} .lang button{padding:9px 14px;border:1px solid #ddd;border-radius:999px;background:#fff;cursor:pointer;font-weight:600} .lang button.active{background:#111;color:#fff}
-.tabs{display:flex;gap:10px} .tabs button{flex:1;padding:14px;border:0;border-radius:14px;font-size:17px;font-weight:800;cursor:pointer;background:#e5e5e5} .tabs button.active{background:#EA580C;color:#fff}
+.lang{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px 0} .lang button{padding:9px 14px;border:1px solid #ddd;border-radius:999px;background:#fff;cursor:pointer;font-weight:600;color:#111} .lang button.active{background:#111;color:#fff}
+.tabs{display:flex;gap:10px} .tabs button{flex:1;padding:14px;border:0;border-radius:14px;font-size:17px;font-weight:800;cursor:pointer;background:#e5e5e5;color:#111} .tabs button.active{background:#C2410C;color:#fff}
 .card{background:#fff;border:1px solid #e5e5e5;border-radius:16px;padding:16px;margin-top:14px}
-label{display:block;font-weight:700;margin:12px 0 6px} input,select,textarea{width:100%;padding:12px;border:1px solid #ccc;border-radius:10px;font-size:16px;background:#fff}
+label,.lbl{display:block;font-weight:700;margin:12px 0 6px} input,select,textarea{width:100%;padding:12px;border:1px solid #ccc;border-radius:10px;font-size:16px;font-family:inherit;background:#fff;color:#111}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:12px} @media(max-width:640px){.row{grid-template-columns:1fr}}
-.storeTop{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:10px} .storeTop a{display:block;text-align:center;padding:14px 8px;border-radius:12px;color:#fff;font-weight:800;text-decoration:none;font-size:15px} .storeTop a small{display:block;font-weight:400;font-size:12px;opacity:.9} .storeTop a.storeBtn{outline:3px solid transparent;outline-offset:2px} .storeTop a.storeBtn.sel{outline-color:#111;box-shadow:0 0 0 3px #fff,0 0 0 6px #111} @media(max-width:640px){.storeTop{grid-template-columns:1fr}}
-.btn{width:100%;padding:14px;border:0;border-radius:12px;background:#EA580C;color:#fff;font-size:18px;font-weight:800;cursor:pointer;margin-top:14px}
+.storeTop{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:10px} .storeTop a{display:block;text-align:center;padding:14px 8px;border-radius:12px;color:#fff;font-weight:800;text-decoration:none;font-size:15px} .storeTop a small{display:block;font-weight:400;font-size:12px} .storeTop a.storeBtn{outline:3px solid transparent;outline-offset:2px} .storeTop a.storeBtn.sel{outline-color:#111;box-shadow:0 0 0 3px #fff,0 0 0 6px #111} @media(max-width:640px){.storeTop{grid-template-columns:1fr}}
+.btn{width:100%;padding:14px;border:0;border-radius:12px;background:#C2410C;color:#fff;font-size:18px;font-weight:800;cursor:pointer;margin-top:14px}
 .urgent{border:2px solid #ef4444;background:#FEF2F2;color:#b91c1c;font-weight:800;padding:10px;border-radius:10px;text-align:center;margin-top:12px;display:none}
+.msg{display:none;margin-top:12px;padding:10px;border-radius:10px;font-weight:700;text-align:center} .msg.err{display:block;background:#FEF2F2;color:#b91c1c;border:1px solid #fca5a5}
 .budget{border:1px solid #eee;border-radius:10px;padding:10px;margin-top:8px} .bar{height:10px;background:#eee;border-radius:99px;overflow:hidden} .bar i{display:block;height:100%;background:#111}
 .kpis{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px} .kpi{border-radius:12px;padding:14px;text-align:center} .kpi b{font-size:26px;display:block}
-.req{border:1px solid #eee;border-radius:14px;padding:14px;margin-top:12px} .pill{display:inline-block;padding:4px 10px;border-radius:999px;background:#111;color:#fff;font-size:12px;font-weight:700;margin-right:6px} .pill.blue{background:#2563eb} .pill.red{background:#dc2626}
-.small{color:#666;font-size:13px} .actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap} .actions button{flex:1;padding:10px;border:1px solid #ddd;border-radius:10px;background:#fff;cursor:pointer;font-weight:700}
-a.store{display:inline-block;margin-top:8px;color:#2563eb;font-weight:700}
+.req{border:1px solid #eee;border-radius:14px;padding:14px;margin-top:12px} .pill{display:inline-block;padding:4px 10px;border-radius:999px;background:#111;color:#fff;font-size:12px;font-weight:700;margin-right:6px} .pill.blue{background:#1d4ed8} .pill.red{background:#b91c1c}
+.small{color:#555;font-size:13px} .actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap} .actions button{flex:1;padding:10px;border:1px solid #ddd;border-radius:10px;background:#fff;cursor:pointer;font-weight:700;color:#111}
+a.store{display:inline-block;margin-top:8px;color:#1d4ed8;font-weight:700}
+.note{background:#FFFBEB;border-left:4px solid #F59E0B;padding:8px 10px;border-radius:6px;margin-top:8px;font-size:14px}
+.costRow{margin-top:8px;font-weight:700} .costRow input{width:140px;display:inline-block;margin-left:6px}
 </style>
 </head>
 <body>
-<header><h1>Tool<span>Request</span></h1><p id="tagline">Request tools without verbal requests. Nothing gets lost.</p><p style="font-size:12px;color:#aaa">Tools only - Pilot v1 - By Lee Romero</p></header>
-<div class="wrap">
+<header><h1>Tool<span>Request</span></h1><p id="tagline">Request tools without verbal requests. Nothing gets lost.</p><p style="font-size:12px;color:#bbb">Tools only - Pilot v1 - By Lee Romero</p></header>
+<main class="wrap">
 <div class="lang" id="langBtns">
-<button data-lang="en" class="active">English</button><button data-lang="es">Español</button><button data-lang="ht">Kreyòl</button><button data-lang="fr">Français</button>
+<button data-lang="en" class="active" lang="en">English</button><button data-lang="es" lang="es">Español</button><button data-lang="ht" lang="ht">Kreyòl</button><button data-lang="fr" lang="fr">Français</button>
 </div>
 <div class="tabs"><button id="tabWorker" class="active">Worker View</button><button id="tabSup">Supervisor View</button></div>
 
-<div id="workerView">
+<section id="workerView">
 <div class="card">
 <h2 id="wTitle" style="margin:0">Create Tool Request</h2>
 <p class="small" id="wSub">Worker does NOT set cost. Supervisor sets cost.</p>
-<label id="lName">Your name</label><input id="fName" placeholder="Lee Romero">
-<div class="row"><div><label id="lTool">Tool needed</label><input id="fTool" placeholder="Band Saw Blade"></div><div><label id="lJob">For what job?</label><input id="fJob" placeholder="CVT"></div></div>
-<label id="lDept">Department</label><select id="fDept"><option>Welding</option><option>Machining</option><option>Assembly</option><option>Maintenance</option></select>
+<label for="fName" id="lName">Your name</label><input id="fName" placeholder="Lee Romero" autocomplete="name">
+<div class="row"><div><label for="fTool" id="lTool">Tool needed</label><input id="fTool" placeholder="Band Saw Blade"></div><div><label for="fJob" id="lJob">For what job?</label><input id="fJob" placeholder="CVT"></div></div>
+<label for="fDept" id="lDept">Department</label><select id="fDept"><option value="Welding">Welding</option><option value="Machining">Machining</option><option value="Assembly">Assembly</option><option value="Maintenance">Maintenance</option></select>
 
-<label>Supplier - Tap a color to choose and search</label>
+<p class="lbl" id="lSup">Supplier - Tap a color to choose and search</p>
 <div class="storeTop" id="storeTop">
-<a href="https://www.mscdirect.com" target="_blank" data-sup="MSC" class="storeBtn sel" style="background:#EA580C">MSC<small>mscdirect.com - Tap to search</small></a>
-<a href="https://www.amazon.com" target="_blank" data-sup="Amazon" class="storeBtn" style="background:#111111">Amazon<small>amazon.com - Tap to search</small></a>
-<a href="https://www.grainger.com" target="_blank" data-sup="Grainger" class="storeBtn" style="background:#C81E1E">Grainger<small>grainger.com - Tap to search</small></a>
+<a href="https://www.mscdirect.com" target="_blank" rel="noopener" data-sup="MSC" class="storeBtn sel" style="background:#C2410C">MSC<small><span>mscdirect.com</span> - <span class="tapSearch">Tap to search</span></small></a>
+<a href="https://www.amazon.com" target="_blank" rel="noopener" data-sup="Amazon" class="storeBtn" style="background:#111111">Amazon<small><span>amazon.com</span> - <span class="tapSearch">Tap to search</span></small></a>
+<a href="https://www.grainger.com" target="_blank" rel="noopener" data-sup="Grainger" class="storeBtn" style="background:#B91C1C">Grainger<small><span>grainger.com</span> - <span class="tapSearch">Tap to search</span></small></a>
 </div>
-<p class="small" style="margin-top:6px">One tap chooses the supplier and opens the store. No duplicate below.</p>
+<p class="small" id="supHelp" style="margin-top:6px">One tap chooses the supplier and opens the store.</p>
 
-<label id="lMsc">MSC number - only numbers (optional, easy for everyone)</label><input id="fMsc" inputmode="numeric" placeholder="Example: 09255092">
+<label for="fMsc" id="lMsc">MSC number - only numbers (optional, easy for everyone)</label><input id="fMsc" inputmode="numeric" placeholder="09255092">
 <p class="small" id="mscHelp">Just copy the MSC number. No need to copy a long link. ToolRequest builds the link automatically.</p>
-<label id="lLink">Product link (optional)</label><input id="fLink" placeholder="Paste link if you know how - if not, leave blank">
-<label id="lUrg">Urgency</label><select id="fUrg"><option>Normal</option><option>Urgent</option><option>URGENT - WORK STOPPED</option></select>
+<label for="fLink" id="lLink">Product link (optional)</label><input id="fLink" type="url" placeholder="Paste link if you know how - if not, leave blank">
+<label for="fUrg" id="lUrg">Urgency</label><select id="fUrg"><option value="Normal">Normal</option><option value="Urgent">Urgent</option><option value="URGENT - WORK STOPPED">URGENT - WORK STOPPED</option></select>
 <div class="urgent" id="urgentBox">URGENT - WORK STOPPED</div>
-<label id="lNotes">Notes (optional)</label><textarea id="fNotes" rows="2" placeholder="Any detail"></textarea>
+<label for="fNotes" id="lNotes">Notes (optional)</label><textarea id="fNotes" rows="2" placeholder="Any detail"></textarea>
+<div class="msg" id="formMsg" role="alert"></div>
 <button class="btn" id="btnCreate">Create Request</button>
-<p class="small" style="text-align:center;margin-top:10px">Link is optional. If you don't know how to copy a link, leave it blank.</p>
+<p class="small" id="linkHelp" style="text-align:center;margin-top:10px">Link is optional. If you don't know how to copy a link, leave it blank.</p>
 </div>
-</div>
+</section>
 
-<div id="supView" style="display:none">
-<div class="card"><h2 style="margin:0">Supervisor Dashboard</h2><p class="small">Supervisor sets the cost. Worker never sets cost. Less multitasking, nothing overlooked.</p>
-<div class="kpis"><div class="kpi" style="background:#FEF3C7"><b id="kTotal">0</b>Total</div><div class="kpi" style="background:#FEE2E2"><b id="kUrgent">0</b>Urgent</div><div class="kpi" style="background:#DCFCE7"><b id="kDel">0</b>Delivered</div></div>
-<h3>Department Budgets</h3><div id="budgets"></div>
+<section id="supView" style="display:none">
+<div class="card"><h2 id="supTitle" style="margin:0">Supervisor Dashboard</h2><p class="small" id="supSub">Supervisor sets the cost. Worker never sets cost. Less multitasking, nothing overlooked.</p>
+<div class="kpis"><div class="kpi" style="background:#FEF3C7"><b id="kTotal">0</b><span id="kTotalL">Total</span></div><div class="kpi" style="background:#FEE2E2"><b id="kUrgent">0</b><span id="kUrgentL">Urgent</span></div><div class="kpi" style="background:#DCFCE7"><b id="kDel">0</b><span id="kDelL">Delivered</span></div></div>
+<h3 id="budgetsTitle">Department Budgets</h3><div id="budgets"></div>
 </div>
-<div class="card"><h3 style="margin:0">All Requests</h3><div id="list"></div><p class="small" id="emptyMsg">No requests yet. Create one in Worker View to test.</p></div>
-</div>
+<div class="card"><h3 id="allReq" style="margin:0">All Requests</h3><div id="list"></div><p class="small" id="emptyMsg">No requests yet. Create one in Worker View to test.</p></div>
+</section>
 <p class="small" style="text-align:center;margin-top:16px">ToolRequest - Tools only - Pilot v1 by Lee Romero | Live demo - Code on GitHub</p>
-</div>
+</main>
 <script>
+// ---------- Translations ----------
+// Every visible text lives here. Data is always saved in English (values),
+// and each person sees it in the language they chose.
+const T={
+  en:{tag:'Request tools without verbal requests. Nothing gets lost.',tabWorker:'Worker View',tabSup:'Supervisor View',
+    wTitle:'Create Tool Request',wSub:'Worker does NOT set cost. Supervisor sets cost.',
+    lName:'Your name',lTool:'Tool needed',lJob:'For what job?',lDept:'Department',
+    lSup:'Supplier - Tap a color to choose and search',tapSearch:'Tap to search',supHelp:'One tap chooses the supplier and opens the store.',
+    lMsc:'MSC number - only numbers (optional, easy for everyone)',mscHelp:'Just copy the MSC number. No need to copy a long link. ToolRequest builds the link automatically.',
+    lLink:'Product link (optional)',phLink:'Paste link if you know how - if not, leave blank',lUrg:'Urgency',lNotes:'Notes (optional)',phNotes:'Any detail',
+    btn:'Create Request',linkHelp:"Link is optional. If you don't know how to copy a link, leave it blank.",missing:'Please add your name and the tool.',
+    urg:{'Normal':'Normal','Urgent':'Urgent','URGENT - WORK STOPPED':'URGENT - WORK STOPPED'},
+    dept:{Welding:'Welding',Machining:'Machining',Assembly:'Assembly',Maintenance:'Maintenance'},
+    supTitle:'Supervisor Dashboard',supSub:'Supervisor sets the cost. Worker never sets cost. Less multitasking, nothing overlooked.',
+    kTotal:'Total',kUrgent:'Urgent',kDel:'Delivered',budgetsTitle:'Department Budgets',allReq:'All Requests',empty:'No requests yet. Create one in Worker View to test.',
+    used:'Used',left:'Left',pctUsed:'% used',full:'Budget reached - 100%',warn:'Warning - 80% used',
+    store:'Store',openLink:'Open store link',noLink:'No link - Supervisor will search.',notes:'Notes',cost:'Cost - Supervisor only: $',
+    status:{Pending:'Pending',Approved:'Approved',Delivered:'Delivered'},act:{approve:'Approve',delivered:'Delivered',pending:'Pending'}},
+  es:{tag:'Pide herramientas sin pedidos verbales. Nada se pierde.',tabWorker:'Vista Trabajador',tabSup:'Vista Supervisor',
+    wTitle:'Crear pedido de herramienta',wSub:'El trabajador NO pone el costo. El supervisor pone el costo.',
+    lName:'Tu nombre',lTool:'Herramienta que necesitas',lJob:'¿Para qué trabajo?',lDept:'Departamento',
+    lSup:'Proveedor: toca un color para elegir y buscar',tapSearch:'Toca para buscar',supHelp:'Un toque elige el proveedor y abre la tienda.',
+    lMsc:'Número MSC: solo números (opcional, fácil para todos)',mscHelp:'Solo copia el número MSC. No necesitas copiar un link largo. ToolRequest crea el link automáticamente.',
+    lLink:'Link del producto (opcional)',phLink:'Pega el link si sabes cómo; si no, déjalo vacío',lUrg:'Urgencia',lNotes:'Notas (opcional)',phNotes:'Cualquier detalle',
+    btn:'Crear pedido',linkHelp:'El link es opcional. Si no sabes copiar un link, déjalo vacío.',missing:'Por favor escribe tu nombre y la herramienta.',
+    urg:{'Normal':'Normal','Urgent':'Urgente','URGENT - WORK STOPPED':'URGENTE - TRABAJO PARADO'},
+    dept:{Welding:'Soldadura',Machining:'Maquinado',Assembly:'Ensamble',Maintenance:'Mantenimiento'},
+    supTitle:'Panel del supervisor',supSub:'El supervisor pone el costo. El trabajador nunca pone el costo. Menos multitarea, nada se pasa por alto.',
+    kTotal:'Total',kUrgent:'Urgentes',kDel:'Entregados',budgetsTitle:'Presupuesto por departamento',allReq:'Todos los pedidos',empty:'Todavía no hay pedidos. Crea uno en la Vista Trabajador para probar.',
+    used:'Usado',left:'Queda',pctUsed:'% usado',full:'Presupuesto alcanzado: 100%',warn:'Aviso: 80% usado',
+    store:'Tienda',openLink:'Abrir link de la tienda',noLink:'Sin link: el supervisor buscará.',notes:'Notas',cost:'Costo (solo supervisor): $',
+    status:{Pending:'Pendiente',Approved:'Aprobado',Delivered:'Entregado'},act:{approve:'Aprobar',delivered:'Entregado',pending:'Pendiente'}},
+  ht:{tag:'Mande zouti san demann vèbal. Anyen pa pèdi.',tabWorker:'Paj Travayè',tabSup:'Paj Sipèvizè',
+    wTitle:'Kreye yon demann zouti',wSub:'Travayè a PA mete pri. Sipèvizè a mete pri.',
+    lName:'Non ou',lTool:'Zouti ou bezwen',lJob:'Pou ki travay?',lDept:'Depatman',
+    lSup:'Founisè: tape yon koulè pou chwazi epi chèche',tapSearch:'Tape pou chèche',supHelp:'Yon sèl tap chwazi founisè a epi louvri magazen an.',
+    lMsc:'Nimewo MSC: sèlman chif (opsyonèl, fasil pou tout moun)',mscHelp:'Jis kopye nimewo MSC a. Pa bezwen kopye yon lyen long. ToolRequest kreye lyen an otomatikman.',
+    lLink:'Lyen pwodwi a (opsyonèl)',phLink:'Kole lyen an si ou konnen kijan; si se pa sa, kite l vid',lUrg:'Ijans',lNotes:'Nòt (opsyonèl)',phNotes:'Nenpòt detay',
+    btn:'Kreye demann',linkHelp:'Lyen an opsyonèl. Si ou pa konn kopye yon lyen, kite l vid.',missing:'Tanpri mete non ou ak zouti a.',
+    urg:{'Normal':'Nòmal','Urgent':'Ijan','URGENT - WORK STOPPED':'IJAN - TRAVAY LA KANPE'},
+    dept:{Welding:'Soudi',Machining:'Machinaj',Assembly:'Asanblaj',Maintenance:'Antretyen'},
+    supTitle:'Tablo sipèvizè',supSub:'Sipèvizè a mete pri. Travayè a pa janm mete pri. Mwens travay an menm tan, anyen pa bliye.',
+    kTotal:'Total',kUrgent:'Ijan',kDel:'Livre',budgetsTitle:'Bidjè pa depatman',allReq:'Tout demann yo',empty:'Poko gen demann. Kreye youn nan Paj Travayè pou teste.',
+    used:'Itilize',left:'Rete',pctUsed:'% itilize',full:'Bidjè a rive: 100%',warn:'Atansyon: 80% itilize',
+    store:'Magazen',openLink:'Louvri lyen magazen an',noLink:'Pa gen lyen: sipèvizè a ap chèche.',notes:'Nòt',cost:'Pri (sipèvizè sèlman): $',
+    status:{Pending:'Annatant',Approved:'Apwouve',Delivered:'Livre'},act:{approve:'Apwouve',delivered:'Livre',pending:'Annatant'}},
+  fr:{tag:'Demandez des outils sans demande verbale. Rien ne se perd.',tabWorker:'Vue Ouvrier',tabSup:'Vue Superviseur',
+    wTitle:"Créer une demande d'outil",wSub:"L'ouvrier NE fixe PAS le coût. Le superviseur fixe le coût.",
+    lName:'Votre nom',lTool:'Outil nécessaire',lJob:'Pour quel travail ?',lDept:'Département',
+    lSup:'Fournisseur : touchez une couleur pour choisir et chercher',tapSearch:'Touchez pour chercher',supHelp:'Un seul toucher choisit le fournisseur et ouvre le magasin.',
+    lMsc:'Numéro MSC : chiffres seulement (facultatif, facile pour tous)',mscHelp:'Copiez juste le numéro MSC. Pas besoin de copier un long lien. ToolRequest crée le lien automatiquement.',
+    lLink:'Lien du produit (facultatif)',phLink:'Collez le lien si vous savez comment ; sinon, laissez vide',lUrg:'Urgence',lNotes:'Notes (facultatif)',phNotes:'Tout détail',
+    btn:'Créer la demande',linkHelp:'Le lien est facultatif. Si vous ne savez pas copier un lien, laissez vide.',missing:"Veuillez ajouter votre nom et l'outil.",
+    urg:{'Normal':'Normal','Urgent':'Urgent','URGENT - WORK STOPPED':'URGENT - TRAVAIL ARRÊTÉ'},
+    dept:{Welding:'Soudure',Machining:'Usinage',Assembly:'Assemblage',Maintenance:'Maintenance'},
+    supTitle:'Tableau du superviseur',supSub:"Le superviseur fixe le coût. L'ouvrier ne fixe jamais le coût. Moins de multitâche, rien n'est oublié.",
+    kTotal:'Total',kUrgent:'Urgentes',kDel:'Livrées',budgetsTitle:'Budgets par département',allReq:'Toutes les demandes',empty:"Aucune demande pour l'instant. Créez-en une dans la Vue Ouvrier pour tester.",
+    used:'Utilisé',left:'Reste',pctUsed:'% utilisé',full:'Budget atteint : 100 %',warn:'Attention : 80 % utilisé',
+    store:'Magasin',openLink:'Ouvrir le lien du magasin',noLink:'Pas de lien : le superviseur cherchera.',notes:'Notes',cost:'Coût (superviseur seulement) : $',
+    status:{Pending:'En attente',Approved:'Approuvée',Delivered:'Livrée'},act:{approve:'Approuver',delivered:'Livrée',pending:'En attente'}}
+};
+let lang='en';
+const t=()=>T[lang];
+
+// ---------- Data (still in memory - Stage 2 adds the database) ----------
 const budgets={Welding:{total:5000,used:0},Machining:{total:4000,used:0},Assembly:{total:3000,used:0},Maintenance:{total:2500,used:0}};
 let selectedSup='MSC';
 let requests=[];
 const $=id=>document.getElementById(id);
-function mscLink(num){ if(!num) return null; const clean=String(num).replace(/[^0-9]/g,''); if(!clean) return null; return 'https://www.mscdirect.com/product/details/'+clean; }
-function storeLink(sup,mscNum,link){ if(link) return link; if(sup==='MSC' && mscNum) return mscLink(mscNum); if(sup==='MSC') return 'https://www.mscdirect.com'; if(sup==='Amazon') return 'https://www.amazon.com'; if(sup==='Grainger') return 'https://www.grainger.com'; return link||''; }
-function calcBudgets(){ for(const d in budgets) budgets[d].used=0; requests.forEach(r=>{ if((r.status==='Approved'||r.status==='Delivered') && r.cost){ const c=parseFloat(r.cost)||0; if(budgets[r.dept]) budgets[r.dept].used+=c; } }); }
+const isUrgent=u=>u==='URGENT - WORK STOPPED';
+
+function mscLink(num){ const clean=String(num||'').replace(/[^0-9]/g,''); return clean?'https://www.mscdirect.com/product/details/'+clean:null; }
+// Returns a real product link, or null if we only know the store.
+function productLink(r){ if(r.link) return r.link; if(r.sup==='MSC') return mscLink(r.msc); return null; }
+function safeUrl(u){ try{ const x=new URL(u); return (x.protocol==='https:'||x.protocol==='http:')?x.href:null; }catch(e){ return null; } }
+function money(n){ const v=Math.round(n*100)/100; return '$'+v.toLocaleString('en-US',{minimumFractionDigits:v%1?2:0,maximumFractionDigits:2}); }
+
+function calcBudgets(){ for(const d in budgets) budgets[d].used=0; requests.forEach(r=>{ if((r.status==='Approved'||r.status==='Delivered') && r.cost){ if(budgets[r.dept]) budgets[r.dept].used+=r.cost; } }); }
 function renderBudgets(){
   calcBudgets();
   let h='';
   for(const dept in budgets){
     const b=budgets[dept]; const left=b.total-b.used; const pct=b.total?Math.round(b.used/b.total*100):0;
-    let color='#111'; if(pct>=100) color='#dc2626'; else if(pct>=80) color='#ea580c';
-    h+='<div class="budget"><b>'+dept+': $'+b.total+' - Used: $'+b.used+' - Left: $'+left+'</b><div class="small">'+pct+'% used</div><div class="bar"><i style="width:'+Math.min(pct,100)+'%;background:'+color+'"></i></div>'+(pct>=100?'<div style="color:#dc2626;font-weight:800">Budget reached - 100%</div>':pct>=80?'<div style="color:#ea580c;font-weight:800">Warning - 80% used</div>':'')+'</div>';
+    let color='#111'; if(pct>=100) color='#b91c1c'; else if(pct>=80) color='#C2410C';
+    h+='<div class="budget"><b>'+t().dept[dept]+': '+money(b.total)+' - '+t().used+': '+money(b.used)+' - '+t().left+': '+money(left)+'</b><div class="small">'+pct+t().pctUsed+'</div><div class="bar"><i style="width:'+Math.min(pct,100)+'%;background:'+color+'"></i></div>'
+      +(pct>=100?'<div style="color:#b91c1c;font-weight:800">'+t().full+'</div>':pct>=80?'<div style="color:#C2410C;font-weight:800">'+t().warn+'</div>':'')+'</div>';
   }
   $('budgets').innerHTML=h;
 }
 function render(){
   renderBudgets();
   $('kTotal').textContent=requests.length;
-  $('kUrgent').textContent=requests.filter(r=>r.urg.includes('URGENT')).length;
+  $('kUrgent').textContent=requests.filter(r=>isUrgent(r.urg)).length;
   $('kDel').textContent=requests.filter(r=>r.status==='Delivered').length;
   const list=$('list'); list.innerHTML='';
   $('emptyMsg').style.display=requests.length?'none':'block';
   requests.slice().reverse().forEach(r=>{
-    const link=storeLink(r.sup,r.msc,r.link);
-    const isUrgent=r.urg.includes('URGENT');
+    const link=safeUrl(productLink(r));
     const div=document.createElement('div'); div.className='req';
-    div.innerHTML='<div><b>'+escapeHtml(r.tool)+' - '+escapeHtml(r.name)+'</b> <span class="pill">'+escapeHtml(r.dept)+'</span> <span class="pill blue">'+escapeHtml(r.sup)+' Store</span>'+(isUrgent?'<span class="pill red">URGENT - WORK STOPPED</span>':'')+'</div>'
+    div.innerHTML='<div><b>'+escapeHtml(r.tool)+' - '+escapeHtml(r.name)+'</b> <span class="pill">'+t().dept[r.dept]+'</span> <span class="pill blue">'+escapeHtml(r.sup)+' '+t().store+'</span>'+(isUrgent(r.urg)?'<span class="pill red">'+t().urg[r.urg]+'</span>':'')+'</div>'
       +'<div class="small">'+escapeHtml(r.job)+'</div>'
-      +'<div class="small">'+(r.link?'<a class="store" href="'+escapeAttr(link)+'" target="_blank">Open store link</a>':'No link - Supervisor will search. ')+(r.sup==='MSC' && r.msc? ' MSC # '+escapeHtml(r.msc):'')+'</div>'
-      +'<div class="small">'+escapeHtml(r.urg)+' - '+r.date+' - '+escapeHtml(r.status)+'</div>'
-      +'<div style="margin-top:8px"><label style="margin:0">Cost - Supervisor only: $ <input type="number" min="0" step="0.01" value="'+(r.cost||'')+'" data-cost="'+r.id+'" style="width:140px;display:inline-block"></label></div>'
-      +'<div class="actions"><button data-act="approve">Approve</button><button data-act="delivered">Delivered</button><button data-act="pending">Pending</button></div>';
+      +'<div class="small">'+(link?'<a class="store" href="'+escapeHtml(link)+'" target="_blank" rel="noopener">'+t().openLink+'</a>':t().noLink)+(r.sup==='MSC'&&r.msc?' MSC # '+escapeHtml(r.msc):'')+'</div>'
+      +(r.notes?'<div class="note"><b>'+t().notes+':</b> '+escapeHtml(r.notes)+'</div>':'')
+      +'<div class="small" style="margin-top:6px">'+t().urg[r.urg]+' - '+escapeHtml(r.date)+' - <b>'+t().status[r.status]+'</b></div>'
+      +'<label class="costRow">'+t().cost+'<input type="number" min="0" step="0.01" value="'+(r.cost||'')+'" data-cost></label>'
+      +'<div class="actions"><button data-act="approve">'+t().act.approve+'</button><button data-act="delivered">'+t().act.delivered+'</button><button data-act="pending">'+t().act.pending+'</button></div>';
+    const costInput=div.querySelector('[data-cost]');
+    const saveCost=()=>{ const v=parseFloat(costInput.value); r.cost=(v>=0)?v:0; };
     div.querySelectorAll('[data-act]').forEach(btn=>{
-      btn.onclick=()=>{ r.status=btn.dataset.act==='approve'?'Approved':btn.dataset.act==='delivered'?'Delivered':'Pending'; const ci=div.querySelector('[data-cost]'); if(ci && ci.value){ r.cost=parseFloat(ci.value)||0; } render(); };
+      btn.onclick=()=>{ saveCost(); r.status={approve:'Approved',delivered:'Delivered',pending:'Pending'}[btn.dataset.act]; render(); };
     });
-    const costInput=div.querySelector('[data-cost]'); costInput.onchange=()=>{ r.cost=parseFloat(costInput.value)||0; render(); }; costInput.onblur=()=>{ r.cost=parseFloat(costInput.value)||0; render(); };
+    // Only refresh the budgets here. Redrawing the whole list would eat the tap on Approve.
+    costInput.onchange=()=>{ saveCost(); renderBudgets(); };
     list.appendChild(div);
   });
 }
 function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-function escapeAttr(s){ return escapeHtml(s).replace(/"/g,'&quot;'); }
-document.querySelectorAll('.storeBtn').forEach(el=>{ el.addEventListener('click',()=>{ document.querySelectorAll('.storeBtn').forEach(x=>x.classList.remove('sel')); el.classList.add('sel'); selectedSup=el.dataset.sup; }); });
-document.querySelectorAll('#langBtns button').forEach(b=>{ b.onclick=()=>{ document.querySelectorAll('#langBtns button').forEach(x=>x.classList.remove('active')); b.classList.add('active'); setLang(b.dataset.lang); }; });
+
+// ---------- Language ----------
 function setLang(l){
-  const t={
-    en:{tag:'Request tools without verbal requests. Nothing gets lost.',wTitle:'Create Tool Request',wSub:'Worker does NOT set cost. Supervisor sets cost.',btn:'Create Request',mscHelp:'Just copy the MSC number. No need to copy a long link. ToolRequest builds the link automatically.'},
-    es:{tag:'Pide herramientas sin pedidos verbales. Nada se pierde.',wTitle:'Crear Pedido de Herramienta',wSub:'El trabajador NO pone el costo. El supervisor pone el costo.',btn:'Crear Pedido',mscHelp:'Solo copia el numero MSC. No necesitas copiar un link largo. ToolRequest crea el link automaticamente.'},
-    ht:{tag:'Mande zouti san demann vebal. Anyen pa pedi.',wTitle:'Kreye Demann Zouti',wSub:'Travaye a PA mete pri. Sipevise a mete pri.',btn:'Kreye Demann',mscHelp:'Jis kopye nimewo MSC a. Pa bezwen kopye yon link long. ToolRequest kreye link la otomatik.'},
-    fr:{tag:'Demandez des outils sans demande verbale. Rien ne se perd.',wTitle:'Creer une Demande d Outil',wSub:'Le travailleur NE met PAS le cout. Le superviseur met le cout.',btn:'Creer la Demande',mscHelp:'Copiez juste le numero MSC. Pas besoin de copier un long lien. ToolRequest cree le lien automatiquement.'}
-  }[l]||{};
-  if(t.tag) $('tagline').textContent=t.tag; if(t.wTitle) $('wTitle').textContent=t.wTitle; if(t.wSub) $('wSub').textContent=t.wSub; if(t.btn) $('btnCreate').textContent=t.btn; if(t.mscHelp) $('mscHelp').textContent=t.mscHelp;
+  if(!T[l]) l='en';
+  lang=l; document.documentElement.lang=l;
+  try{ localStorage.setItem('tr_lang',l); }catch(e){}
+  document.querySelectorAll('#langBtns button').forEach(x=>x.classList.toggle('active',x.dataset.lang===l));
+  const s=t();
+  ['wTitle','wSub','lName','lTool','lJob','lDept','lSup','supHelp','lMsc','mscHelp','lLink','lUrg','lNotes','linkHelp','supTitle','supSub','budgetsTitle','allReq','tabWorker','tabSup'].forEach(k=>{ $(k).textContent=s[k]; });
+  $('tagline').textContent=s.tag; $('btnCreate').textContent=s.btn; $('emptyMsg').textContent=s.empty;
+  $('kTotalL').textContent=s.kTotal; $('kUrgentL').textContent=s.kUrgent; $('kDelL').textContent=s.kDel;
+  $('fLink').placeholder=s.phLink; $('fNotes').placeholder=s.phNotes;
+  document.querySelectorAll('.tapSearch').forEach(x=>x.textContent=s.tapSearch);
+  [...$('fDept').options].forEach(o=>o.textContent=s.dept[o.value]);
+  [...$('fUrg').options].forEach(o=>o.textContent=s.urg[o.value]);
+  $('urgentBox').textContent=s.urg['URGENT - WORK STOPPED'];
+  if($('formMsg').classList.contains('err')) $('formMsg').textContent=s.missing;
+  render();
 }
+document.querySelectorAll('#langBtns button').forEach(b=>{ b.onclick=()=>setLang(b.dataset.lang); });
+
+// ---------- Worker form ----------
+document.querySelectorAll('.storeBtn').forEach(el=>{ el.addEventListener('click',()=>{ document.querySelectorAll('.storeBtn').forEach(x=>x.classList.remove('sel')); el.classList.add('sel'); selectedSup=el.dataset.sup; }); });
 $('tabWorker').onclick=()=>{ $('workerView').style.display='block'; $('supView').style.display='none'; $('tabWorker').classList.add('active'); $('tabSup').classList.remove('active'); };
 $('tabSup').onclick=()=>{ $('workerView').style.display='none'; $('supView').style.display='block'; $('tabSup').classList.add('active'); $('tabWorker').classList.remove('active'); };
-$('fUrg').onchange=()=>{ $('urgentBox').style.display=$('fUrg').value.includes('URGENT')?'block':'none'; };
+$('fUrg').onchange=()=>{ $('urgentBox').style.display=isUrgent($('fUrg').value)?'block':'none'; };
 $('btnCreate').onclick=()=>{
   const name=$('fName').value.trim(), tool=$('fTool').value.trim();
-  if(!name||!tool){ alert('Please add your name and tool / Por favor agrega tu nombre y herramienta'); return; }
-  requests.push({id:Date.now(),name,tool,job:$('fJob').value.trim()||'--',dept:$('fDept').value,sup:selectedSup,msc:$('fMsc').value.trim(),link:$('fLink').value.trim(),urg:$('fUrg').value,notes:$('fNotes').value.trim(),status:'Pending',cost:'',date:new Date().toLocaleString()});
-  $('fTool').value=''; $('fMsc').value=''; $('fLink').value=''; $('fNotes').value='';
+  const msg=$('formMsg');
+  if(!name||!tool){ msg.textContent=t().missing; msg.className='msg err'; (name?$('fTool'):$('fName')).focus(); return; }
+  msg.className='msg'; msg.textContent='';
+  requests.push({id:Date.now(),name,tool,job:$('fJob').value.trim()||'--',dept:$('fDept').value,sup:selectedSup,msc:$('fMsc').value.replace(/[^0-9]/g,''),link:$('fLink').value.trim(),urg:$('fUrg').value,notes:$('fNotes').value.trim(),status:'Pending',cost:0,date:new Date().toLocaleString()});
+  $('fTool').value=''; $('fMsc').value=''; $('fLink').value=''; $('fNotes').value=''; $('fUrg').value='Normal'; $('urgentBox').style.display='none';
   render(); $('tabSup').click(); window.scrollTo({top:0,behavior:'smooth'});
 };
-render();
+
+let saved='en'; try{ saved=localStorage.getItem('tr_lang')||'en'; }catch(e){}
+setLang(saved);
 </script>
 </body>
 </html>
