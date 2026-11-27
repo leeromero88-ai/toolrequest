@@ -212,7 +212,10 @@ function setLang(l){
 document.querySelectorAll('#langBtns button').forEach(b=>{ b.onclick=()=>setLang(b.dataset.lang); });
 
 // ---------- Worker form ----------
-document.querySelectorAll('.storeBtn').forEach(el=>{ el.addEventListener('click',()=>{ document.querySelectorAll('.storeBtn').forEach(x=>x.classList.remove('sel')); el.classList.add('sel'); selectedSup=el.dataset.sup; }); });
+function selectSup(sup){ selectedSup=sup; document.querySelectorAll('.storeBtn').forEach(x=>x.classList.toggle('sel',x.dataset.sup===sup)); }
+document.querySelectorAll('.storeBtn').forEach(el=>{ el.addEventListener('click',()=>selectSup(el.dataset.sup)); });
+// An MSC number only makes sense with MSC, so typing one selects MSC automatically.
+$('fMsc').addEventListener('input',()=>{ if(/[0-9]/.test($('fMsc').value)) selectSup('MSC'); });
 $('tabWorker').onclick=()=>{ $('workerView').style.display='block'; $('supView').style.display='none'; $('tabWorker').classList.add('active'); $('tabSup').classList.remove('active'); };
 $('tabSup').onclick=()=>{ $('workerView').style.display='none'; $('supView').style.display='block'; $('tabSup').classList.add('active'); $('tabWorker').classList.remove('active'); };
 $('fUrg').onchange=()=>{ $('urgentBox').style.display=isUrgent($('fUrg').value)?'block':'none'; };
